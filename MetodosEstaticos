@@ -1,0 +1,44 @@
+package registroharrypotter;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+import static registroharrypotter.Planificador.FileUsuarios;
+
+/**
+ *
+ * @author delll
+ */
+public class MetodosEstaticos {
+    
+    public static Boolean VerificarDatos(String usuario, String contraseña) 
+            throws FileNotFoundException, IOException{
+        Scanner teclado = new Scanner(System.in);
+        try{
+           //En vez de FileUsuarios, poner la ruta del archivo Usuarios.txt
+           FileReader leer = new FileReader (FileUsuarios); 
+           FileWriter escribir = new FileWriter (FileUsuarios);
+           BufferedReader br = new BufferedReader(leer);
+     
+           for (/*Número de líneas del archivo para que detecte el return*/ ) {
+                String linea = br.readLine();
+                String[] dataList = linea.split(",");
+
+                if (dataList[0].equals(usuario)) {
+
+                    //Revisar si la contraseña es correcta
+                    while (!contraseña.equals(dataList[1])) {
+                        System.out.println("Ha ingresado mal la contraseña");
+                        System.out.println("Ingrese de nuevo su contraseña: ");
+                        contraseña = teclado.next();
+                    }
+                    
+                    return true;
+                } 
+            }
+        }
+    }
+}

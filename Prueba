@@ -1,21 +1,45 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package proyecto_poo;
+package registroharrypotter;
+import java.util.Scanner;
 
 /**
  *
- * @author E6530
+ * @author delll
  */
-public class Prueba {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
+public class Main {
     
+    public static void main(String[] args){
+       
+        int opUsuario=0;
+        String salir=null;
+        Scanner teclado = new Scanner(System.in);
+        while (!"S".equals(salir)){
+            int rol=0;
+            
+            System.out.println("/**COLEGIO HOGWARTS DE MAGIA Y HECHICERÍA**/");
+            System.out.println("Roles académicos:");
+            System.out.println("1.Hechicero Planificador");
+            System.out.println("2.Estudiante");
+            System.out.println("Seleccione qué rol desempeña: ");
+            rol = teclado.nextInt();
+            
+            switch(rol){
+                case (1):
+                   
+                    //Comprobar si se encuentra en el archivo usuario.txt
+                    Boolean confirm;
+                    String usuPlanif="";
+                    String passPlanif="";
+                    System.out.println("Ingrese su nombre de usuario: ");
+                    usuPlanif= teclado.next().toLowerCase();
+                    System.out.println("Ingrese su contraseña: ");
+                    passPlanif = teclado.next().toLowerCase();
+                    //Aplicar método de la clase MetodosEstaticos para validar
+                    confirm = MetodosEstaticos.VerificarDatos(usuPlanif, passPlanif);
+                    
+                case (2):    
+            }
+        }
+    }    
 }
+

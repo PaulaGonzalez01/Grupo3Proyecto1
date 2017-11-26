@@ -1,5 +1,5 @@
-/*
 package registroharrypotter;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -8,10 +8,10 @@ import java.util.Scanner;
  */
 public class Main {
     
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException{
        
         int opUsuario=0;
-        String salir=null;
+        String salir="";
         Scanner teclado = new Scanner(System.in);
         while (!"S".equals(salir)){
             int rol=0;
@@ -25,20 +25,59 @@ public class Main {
             
             switch(rol){
                 case (1):
-                   
-                    //Comprobar si se encuentra en el archivo usuario.txt
-                    Boolean confirm;
-                    String usuPlanif="";
-                    String passPlanif="";
-                    System.out.println("Ingrese su nombre de usuario: ");
-                    usuPlanif= teclado.next().toLowerCase();
-                    System.out.println("Ingrese su contraseña: ");
-                    passPlanif = teclado.next().toLowerCase();
-                    //Aplicar método de la clase MetodosEstaticos para validar
-                    confirm = MetodosEstaticos.VerificarDatos(usuPlanif, passPlanif);
+
+                    String usuPlanif = "";
+                    String passPlanif = "";
+                    Boolean end = true;
+
+                    //Comprobando que se encuentra en el archivo
+                    //Creando Planificador
+                    while (end == true) {
+                        System.out.println("Ingrese su nombre de usuario: ");
+                        usuPlanif = teclado.next().toLowerCase();
+                        System.out.println("Ingrese su contraseña: ");
+                        passPlanif = teclado.next().toLowerCase();
+                        Boolean confirm = MetodosEstaticos.VerificarDatos(usuPlanif, passPlanif, true);
+                        if (confirm) {
+                            System.out.println("¡Ingreso exitoso!");
+                            end = false;
+                        } else {
+                            System.out.println("El usuario o la contraseña no son válidos");
+                            System.out.println("Por favor intente de nuevo");
+                        }
+                    }
+                    
+                    //Mostrar el menú y ejecutar las opciones
+                    /* Hacer que pueda volver al menú principal*/
+                    Planificador planif = new Planificador(usuPlanif, passPlanif);
+                    
+                    String opPlanif = null;
+                    while (!"N".equals(opPlanif)) {
+                        planif.ImprimirMenuPrincipal();
+                        System.out.println("Ingrese la opción a la que desea acceder: ");
+                        int opCurso = teclado.nextInt();
+
+                        switch (opCurso) {
+                            case (1):
+                                planif.CrearCurso();
+                            case (2):
+                                planif.CrearProfesor();
+                            case (3):
+                                planif.CrearEstudiante();
+                            case (4):
+                                planif.VerHorariosPlanificados();
+                            case (5):
+                                planif.ListadoEstudiantes();
+                        }
+                        System.out.println("¿Desea volver al menú principal?(S/N)");
+                        opPlanif = teclado.next().toUpperCase();
+                    }
+                    
                     
                 case (2):    
             }
+            System.out.println("¿Desea salir del programa?");
+            salir = teclado.next().toUpperCase();
         }
     }    
 }

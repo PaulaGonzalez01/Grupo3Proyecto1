@@ -1,3 +1,4 @@
+
 package registroharrypotter;
 
 import java.io.BufferedReader;
@@ -15,9 +16,8 @@ import java.util.Comparator;
 public class Planificador {
     
     Scanner sc= new Scanner(System.in);
-    ArrayList<String> lista_materias = new ArrayList<>();
-    ArrayList<String> lista_profesores = new ArrayList<>();
-    ArrayList <Estudiante> lista_estudiantes= new ArrayList<>(); 
+    static ArrayList<String> lista_profesores = new ArrayList<>();
+    static ArrayList <Estudiante> lista_estudiantes= new ArrayList<>(); 
     
     String usuario;
     String contraseña;
@@ -35,14 +35,7 @@ public class Planificador {
         this.usuario = usuario;
         this.contraseña = contraseña;
         //¿No se agregarían las materias de nuevo cada vez que cree un Planificador?
-        lista_materias.add("Pociones");
-        lista_materias.add("Defensa contra las artes oscuras");
-        lista_materias.add("Adivinación");
-        lista_materias.add("Astronomía");
-        lista_materias.add("Historia de la Magia");
-        lista_materias.add("Herbología");
-        lista_materias.add("Encantamientos");
-        lista_materias.add("Vuelo");
+        
     }
     
     public void ImprimirMenuPrincipal(){
@@ -65,8 +58,20 @@ public class Planificador {
         }
     }
     
-    //Imprimir el listado de materias
-    public void ImprimirMaterias(){
+    public static ArrayList<String> listaMaterias(){
+        ArrayList<String> lista_materias = new ArrayList<>();
+        lista_materias.add("Pociones");
+        lista_materias.add("Defensa contra las artes oscuras");
+        lista_materias.add("Adivinación");
+        lista_materias.add("Astronomía");
+        lista_materias.add("Historia de la Magia");
+        lista_materias.add("Herbología");
+        lista_materias.add("Encantamientos");
+        lista_materias.add("Vuelo");
+        return lista_materias;
+    }
+    
+    public static void ImprimirMaterias(ArrayList<String> lista_materias){
         String m;
         
         for (int x = 0; x < lista_materias.size(); x++){
@@ -77,7 +82,35 @@ public class Planificador {
     
     
     
-    
+    public static Boolean VerificarDatosP(String usuario, String contraseña, Boolean result) throws IOException {
+
+        try {
+            FileReader leer = new FileReader("Usuarios.txt");
+            BufferedReader line = new BufferedReader(leer);
+            String confirm = null;
+            Boolean first = true;
+            while (first) {
+                while (line.ready()) {
+                    String[] listLine = line.readLine().split(",");
+                    if (listLine[0] == usuario && listLine[1] == contraseña) {
+                        confirm = "Yes";
+                    }
+                }
+                if (confirm != null) {
+                    System.out.println("¡Ingreso exitoso!");
+                    result = true;
+                    first = false;   
+                } else {
+                    result = false;
+                }
+            }
+            leer.close();
+
+        } catch (IOException ex) {ex.printStackTrace();}
+        return result;
+
+    }
+
     
     public void CrearCurso() throws FileNotFoundException, IOException {
         String op_crear = "";
@@ -86,7 +119,7 @@ public class Planificador {
         String horario = "";
         String materia_ = "";
         String profesor_ = "";
-
+        ArrayList<String> lista_materias = listaMaterias();
         while (op_crear != "S") {
             int op_curso;
             int op_profesor;
@@ -94,7 +127,7 @@ public class Planificador {
             String validar = null;
             while (validar == null) {
                 System.out.println("/** MATERIAS **/\n");
-                ImprimirMaterias(); //aplicando método para imprimir materias
+                ImprimirMaterias(lista_materias); //aplicando método para imprimir materias
                 System.out.println("Elija una materia del listado de materias: ");
                 op_curso = sc.nextInt();
 
@@ -132,7 +165,7 @@ public class Planificador {
                     FileReader leer = new FileReader(FileCursos);
                     FileWriter escribir = new FileWriter(FileCursos);
                     BufferedReader line = new BufferedReader(leer);
-
+                    PrintWriter ecrit = new PrintWriter(escribir);
                     while (line.ready()) {
                         String partes[] = line.readLine().split(",");
                         String p_materia = partes[0];
@@ -144,13 +177,14 @@ public class Planificador {
                             System.out.println("Vuelva a intentarlo");
                             validar = null;
                         } else {
-                            escribir.write(nuevo_registro);
+                            ecrit.write(nuevo_registro);
                             validar = "s";
                             
                         }
                     }
                     leer.close();
                     escribir.close();
+                    ecrit.close();
 
                 } catch (IOException e) {System.out.println("Error");}
             }
@@ -321,7 +355,9 @@ public class Planificador {
         
         System.out.println("/** CURSOS PLANIFICADOS **/");
         System.out.println("/** MATERIAS **/\n");
-        ImprimirMaterias(); //aplicación del método imprimir materias
+        
+        ArrayList<String> lista_materias = listaMaterias();
+        ImprimirMaterias(lista_materias); //aplicación del método imprimir materias
         System.out.println("Elija una materia del listado de materias: ");
         op_listado=sc.nextInt();
         
@@ -422,4 +458,3 @@ public class Planificador {
         }
     }    
 }
-

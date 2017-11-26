@@ -1,9 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package proyecto_poo;
+package registroharrypotter;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,18 +7,21 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
-/**
- *
- * @author E6530
- */
-public class Estudiante extends Planificador {
-    public int n_materias;
+import java.util.Scanner;
 
-    public Estudiante(int n_materias, int opcion, String materia, String fecha_ingreso, int tipo_mago, String profesor, String nombre, String apellido, int edad, String casa, String varita) {
-        super(opcion, materia, fecha_ingreso, tipo_mago, profesor, nombre, apellido, edad, casa, varita);
-        this.n_materias = n_materias;
+
+public class Estudiante extends Persona {
+    
+    public int n_materias;
+    
+
+    public Estudiante(String nombre, String apellido, int edad, String casa, String varita) {
+        super(nombre, apellido, edad, casa, varita);
     }
+
+
    
     public int getN_materias() {
         return n_materias;
@@ -30,53 +29,64 @@ public class Estudiante extends Planificador {
     public void setN_materias(int n_materias) {
         this.n_materias = n_materias;
     }
+
     
-    @Override
-    public void setOpcion(int opcion){
-        this.opcion = opcion;
-    }
-    @Override
-    public void setMateria(String materia){
-        this.materia = materia;
-    }
-    @Override
-    public void setFechaIngreso(String fecha_ingreso){
-        this.fecha_ingreso = fecha_ingreso;
-    }
-    @Override
-    public void setTipoMago(int tipo_mago){
-        this.tipo_mago = tipo_mago;
-    }
-    @Override
-    public void setProfesor(String profesor){
-        this.profesor = profesor;
-    }
-    
-    @Override
-    public int getOpcion(){
-        return opcion;
-    }
-    @Override
-    public String getMateria(){
-        return materia;
-    }
-    @Override
-    public String getFechaIngreso(){
-        return fecha_ingreso;
-    }
-    @Override
-    public int getTipoMago(){
-        return tipo_mago;
-    }
-    @Override
-    public String getProfesor(){
-        return profesor;
-    }
-    
-    @Override
-    public String getNombre() {
+    public static String getNameE(String usuario) throws IOException{
+        String nombre = null;
+        try{
+            FileReader leer = new FileReader("Usuarios.txt");
+            BufferedReader line = new BufferedReader(leer);
+            while(line.ready()){
+                String[] linea = line.readLine().split(",");
+                if (linea[0].equals(usuario)){
+                    nombre = linea[2];
+                }
+                
+            }
+            
+        } catch(IOException ex){
+            ex.printStackTrace();
+        }
         return nombre;
     }
+    
+    public static String getApellidoE(String usuario) throws IOException{
+        String apellido = null;
+        try{
+            FileReader leer = new FileReader("Usuarios.txt");
+            BufferedReader line = new BufferedReader(leer);
+            while(line.ready()){
+                String[] linea = line.readLine().split(",");
+                if (linea[0].equals(usuario)){
+                    apellido = linea[2];
+                }
+                
+            }
+            
+        } catch(IOException ex){
+            ex.printStackTrace();
+        }
+        return apellido;
+    }
+    public static String getEdadE(String usuario) throws IOException{
+        String edad = null;
+        try{
+            FileReader leer = new FileReader("Usuarios.txt");
+            BufferedReader line = new BufferedReader(leer);
+            while(line.ready()){
+                String[] linea = line.readLine().split(",");
+                if (linea[0].equals(usuario)){
+                    edad = linea[2];
+                }
+                
+            }
+            
+        } catch(IOException ex){
+            ex.printStackTrace();
+        }
+        return edad;
+    }
+    
     @Override
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -123,8 +133,39 @@ public class Estudiante extends Planificador {
         String mensaje= getNombre()+"--"+getApellido()+"--"+getEdad()+"--"+getCasa()+"--"+getVarita();
         return mensaje;
     }
+
+    
+    public static Boolean VerificarDatosE(String usuario, String contraseña, Boolean result) throws IOException {
+
+        try {
+            FileReader leer = new FileReader("Estudiantesi.txt");
+            BufferedReader line = new BufferedReader(leer);
+            String confirm = null;
+            Boolean first = true;
+            while (first) {
+                while (line.ready()) {
+                    String[] listLine = line.readLine().split(",");
+                    if (listLine[0] == usuario && listLine[1] == contraseña) {
+                        confirm = "Yes";
+                    }
+                }
+                if (confirm != null) {
+                    System.out.println("¡Ingreso exitoso!");
+                    result = true;
+                    first = false;   
+                } else {
+                    result = false;
+                }
+            }
+            leer.close();
+
+        } catch (IOException ex) {ex.printStackTrace();}
+        return result;
+
+    }
     
     public void VerCursosPlanificados() throws FileNotFoundException, IOException{
+       
         String op_crear = "";
         String vmateria = "";
         String vprofesor = "";
@@ -132,9 +173,11 @@ public class Estudiante extends Planificador {
         String vhorario = "";
         int opcurso;
         String encontrado = "N";
+        ArrayList<String> lista_materias = Planificador.listaMaterias();
+        Scanner sc = new Scanner(System.in);
         
         System.out.println("/** CURSOS PLANIFICADOS **/\n");
-        ImprimirMaterias();
+        Planificador.ImprimirMaterias(lista_materias);
         System.out.println("Elija una materia del listado de materias: ");
         opcurso =sc.nextInt();
             
@@ -146,22 +189,18 @@ public class Estudiante extends Planificador {
         vmateria = lista_materias.get(opcurso - 1);
         
         try{
-           FileReader leer = new FileReader (FileCursos);
-           BufferedReader br = new BufferedReader(leer);
-           String linea = br.readLine();
+           FileReader leer = new FileReader ("Cursos.txt");
+           BufferedReader linea = new BufferedReader(leer);
            
-           while(linea != null){
-               String partes[]=linea.split(",");
+           
+           while(linea.ready()){
+               String partes[]=linea.readLine().split(",");
                
                if (vmateria.equals(partes[0])){
                    vprofesor = partes[1];
                    vdia = partes[2];
                    vhorario = partes[3];
                    encontrado = "S";
-                   linea = null; 
-                   
-               }else{
-                   linea = br.readLine();
                }
             }
             leer.close();

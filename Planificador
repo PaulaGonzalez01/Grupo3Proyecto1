@@ -333,14 +333,15 @@ public class Planificador {
             
             String bandera = "False";
 
-            for (int x = 0; x < lista_profesores.size(); x++) { //comprobando si el nombre ya existe en el array
-                if (lista_profesores.get(x).equals(nombre_completo)) {
+            for (int x = 0; x < lista_estudiantes.size(); x++) { //comprobando si el nombre ya existe en el array
+                if (lista_estudiantes.get(x).nombre.equals(nombre_completo)) {
                     bandera = "True";
                 }
             }
 
-            if (bandera == "False") {
-                //lista_estudiantes.add(nombre_completo);
+            if ("False".equals(bandera)) {
+                Estudiante est= new Estudiante(nombre,apellido,edad,casa,varita);
+                lista_estudiantes.add(est);
             }
 
             escribir.write(aux);
@@ -383,6 +384,22 @@ public class Planificador {
         catch(FileNotFoundException ex){
          ex.printStackTrace();
         } 
+    }
+    public void ConsultarRegistradosMaterias() throws FileNotFoundException, IOException{
+        FileReader reader=new FileReader("registro.txt");
+        System.out.println("Ingrese materia a consultar: ");
+        int n_mater=sc.nextInt();
+        String nombre_materia=lista_materias.get(n_mater);
+        BufferedReader br= new BufferedReader(reader);
+        String line="";
+        int n=0;
+        while(null!=line){
+            line=br.readLine();
+            if(nombre_materia.equals(line.split(",")[3])){
+                n=n+1;
+            }
+        }
+        System.out.println("Numero de registrados: "+n);
     }
     
     public void ListadoEstudiantes() throws FileNotFoundException, IOException{

@@ -16,6 +16,7 @@ import java.util.Comparator;
 public class Planificador {
     
     Scanner sc= new Scanner(System.in);
+    static ArrayList<String> lista_materias = listaMaterias();
     static ArrayList<String> lista_profesores = new ArrayList<>();
     static ArrayList <Estudiante> lista_estudiantes= new ArrayList<>(); 
     
@@ -210,8 +211,8 @@ public class Planificador {
         int edad = 0, tipo_mago = 0;
         
         try {
-            FileReader leer = new FileReader(FileProfesores);
-            FileWriter escribir = new FileWriter(FileProfesores);
+            FileReader leer = new FileReader("Profesores.txr");
+            FileWriter escribir = new FileWriter("Profesores.txt");
             BufferedReader br = new BufferedReader(leer);
 
             while (!"S".equals(op_crear)) {
@@ -282,7 +283,7 @@ public class Planificador {
         String animal = "", pocion = "", deporte = "";
         String nombre = "", apellido = "", varita = "", casa = "";
         int edad = 0, tipo_mago = 0;
-     
+        
         try {
             FileReader leer = new FileReader(FileEstudiantes);
             FileWriter escribir = new FileWriter(FileEstudiantes);
@@ -329,6 +330,7 @@ public class Planificador {
             }
             
             String nombre_completo = nombre + " " + apellido;
+            
             String bandera = "False";
 
             for (int x = 0; x < lista_profesores.size(); x++) { //comprobando si el nombre ya existe en el array
@@ -338,7 +340,7 @@ public class Planificador {
             }
 
             if (bandera == "False") {
-                lista_estudiantes.add(nombre_completo);
+                //lista_estudiantes.add(nombre_completo);
             }
 
             escribir.write(aux);
@@ -458,3 +460,4 @@ public class Planificador {
         }
     }    
 }
+

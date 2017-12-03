@@ -1,0 +1,43 @@
+package registroharrypotter;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+/**
+ *
+ * @author delll
+ */
+public class MetodosEstaticos {
+    
+    //Verificar el usuario y contraseña del Planificador
+    public static Boolean VerificarDatos(String usuario, String contraseña, Boolean result) throws IOException {
+
+        try {
+            FileReader leer = new FileReader("Usuarios.txt");
+            BufferedReader line = new BufferedReader(leer);
+            String confirm = null;
+            Boolean first = true;
+            while (first) {
+                while (line.ready()) {
+                    String[] listLine = line.readLine().split(",");
+                    if (listLine[0] == usuario && listLine[1] == contraseña) {
+                        confirm = "Yes";
+                    }
+                }
+                if (confirm != null) {
+                    System.out.println("¡Ingreso exitoso!");
+                    result = true;
+                    first = false;   
+                } else {
+                    result = false;
+                }
+            }
+            leer.close();
+
+        } catch (IOException ex) {ex.printStackTrace();}
+        return result;
+
+    }
+}
+

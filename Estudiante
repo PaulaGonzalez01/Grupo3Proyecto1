@@ -1,4 +1,4 @@
-package registroharrypotter;
+ppackage registroharrypotter;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,10 +12,10 @@ import java.util.Calendar;
 import java.util.Scanner;
 
 
-public class Estudiante extends Persona {
+public class Estudiante extends Persona implements Volador {
     
     public int n_materias;
-    
+    ArrayList<String> lista_materias = Planificador.listaMaterias();
 
     public Estudiante(String nombre, String apellido, int edad, String casa, String varita) {
         super(nombre, apellido, edad, casa, varita);
@@ -134,7 +134,7 @@ public class Estudiante extends Persona {
         return mensaje;
     }
 
-    
+    Scanner sc = new Scanner(System.in);
     public static Boolean VerificarDatosE(String usuario, String contraseña, Boolean result) throws IOException {
 
         try {
@@ -173,11 +173,11 @@ public class Estudiante extends Persona {
         String vhorario = "";
         int opcurso;
         String encontrado = "N";
-        ArrayList<String> lista_materias = Planificador.listaMaterias();
+        ArrayList<String> lista_materia = Planificador.listaMaterias();
         Scanner sc = new Scanner(System.in);
         
         System.out.println("/** CURSOS PLANIFICADOS **/\n");
-        Planificador.ImprimirMaterias(lista_materias);
+        Planificador.ImprimirMaterias(lista_materia);
         System.out.println("Elija una materia del listado de materias: ");
         opcurso =sc.nextInt();
             
@@ -186,7 +186,7 @@ public class Estudiante extends Persona {
             opcurso=sc.nextInt(); 
         }
             
-        vmateria = lista_materias.get(opcurso - 1);
+        vmateria = lista_materia.get(opcurso - 1);
         
         try{
            FileReader leer = new FileReader ("Cursos.txt");
@@ -253,7 +253,7 @@ public class Estudiante extends Persona {
             int op_curso;
   
             System.out.println("/** REGISTROS **/\n");
-            ImprimirMaterias(); //aplicando método para imprimir materias
+            Planificador.ImprimirMaterias(Planificador.listaMaterias()); //aplicando método para imprimir materias
             System.out.print("Elija la materia para registrar: ");
             op_curso=sc.nextInt();
             
@@ -265,7 +265,7 @@ public class Estudiante extends Persona {
             r_materia = lista_materias.get(op_curso - 1);
             
             try{
-                FileReader leer = new FileReader (FileCursos);
+                FileReader leer = new FileReader ("Cursos.txt");
                 BufferedReader br = new BufferedReader(leer);
                 String linea = br.readLine();
 
@@ -281,7 +281,7 @@ public class Estudiante extends Persona {
                                || r_materia.equals("Adivinación")){
 
                            try{
-                                FileReader leer2 = new FileReader (FileEstudiantes);
+                                FileReader leer2 = new FileReader ("Estudiantes");
                                 BufferedReader br2 = new BufferedReader(leer);
                                 String linea2 = br2.readLine();
 
@@ -349,7 +349,7 @@ public class Estudiante extends Persona {
         String mago = "";
         
         try{
-           FileReader leer4 = new FileReader (FileEstudiantes);
+           FileReader leer4 = new FileReader ("Estudiantes.txt");
            BufferedReader br4 = new BufferedReader(leer4);
            String linea = br4.readLine();
            
@@ -382,4 +382,15 @@ public class Estudiante extends Persona {
         //Si es mago normal puede volar con una nimbus 2000
         //El resto de magos vuelan con cualquier cosa
     }
+
+    @Override
+    public void Volar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void Despegar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
+
